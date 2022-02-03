@@ -51,7 +51,7 @@ public class ChecklistRepository {
     }
 
     public List<Checklist> findAllChecklistRequestChecklist(UUID uid, Optional<Integer> page, Optional<Integer> size){
-        Query<Checklist> query = getSession().createNativeQuery("select * from checklist c where c.checklistRequestUid=:uid", Checklist.class);
+        Query<Checklist> query = getSession().createNativeQuery("select * from checklist c where c.checklist_request_uid=:uid", Checklist.class);
         query.setParameter("uid", String.valueOf(uid));
         if(size.isPresent() && page.isPresent()){
             return pagination(query, page.get(), size.get());
@@ -60,7 +60,7 @@ public class ChecklistRepository {
     }
 
     public Checklist findbyUUID(UUID uid){
-        Query<Checklist> query = getSession().createNativeQuery("select * from checklist c where c.checklistUid=:uid", Checklist.class);
+        Query<Checklist> query = getSession().createNativeQuery("select * from checklist c where c.checklist_uid=:uid", Checklist.class);
         query.setParameter("uid", String.valueOf(uid));
         return query.getSingleResult();
     }

@@ -19,17 +19,22 @@ public class Checklist {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int checklistId;
 
+    @Column(name = "checklist_uid")
     @Type(type= "org.hibernate.type.UUIDCharType")
     private UUID checklistUid=UUID.randomUUID();
 
+    @Column(name = "checklist")
     @Convert(converter = StringMapConverter.class)
     private Map<String, String> checklist;
 
+    @Column(name = "checklist_status")
     private int checklistStatus=1;
 
+    @Column(name = "created_date")
     @CreationTimestamp
     private Timestamp createdDate=Timestamp.valueOf(LocalDateTime.now());
 
+    @Column(name = "updated_date")
     @UpdateTimestamp
     private Timestamp updatedDate=Timestamp.valueOf(LocalDateTime.now());
 
