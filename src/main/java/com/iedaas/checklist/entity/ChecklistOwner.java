@@ -19,12 +19,12 @@ public class ChecklistOwner {
     private UUID checklistUid;
 
     @Column(name = "owner_uid", columnDefinition = "VARCHAR(36)")
-    private String ownerUid;
+    private UUID ownerUid;
 
     public ChecklistOwner() {
     }
 
-    public ChecklistOwner(UUID checklistUid, String ownerUid) {
+    public ChecklistOwner(UUID checklistUid, UUID ownerUid) {
         this.checklistUid = checklistUid;
         this.ownerUid = ownerUid;
     }
@@ -41,11 +41,11 @@ public class ChecklistOwner {
         this.checklistUid = checklistUid;
     }
 
-    public String getOwnerUid() {
+    public UUID getOwnerUid() {
         return ownerUid;
     }
 
-    public void setOwnerUid(String ownerUid) {
+    public void setOwnerUid(UUID ownerUid) {
         this.ownerUid = ownerUid;
     }
 

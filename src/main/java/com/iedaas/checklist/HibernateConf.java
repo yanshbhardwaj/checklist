@@ -73,4 +73,9 @@ public class HibernateConf {
         return new ModelMapper();
     }
 
+    @Bean
+    public AuthorizationFilter authorizationFilter() throws Exception {
+        return new AuthorizationFilter();
+    }
+
 }
