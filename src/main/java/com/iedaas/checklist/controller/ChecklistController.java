@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 public class ChecklistController {
@@ -25,15 +27,21 @@ public class ChecklistController {
     private ChecklistService checklistService;
 
     @GetMapping("/checklist")
-    public List<ChecklistDTO> getChecklist(){
+    public List<ChecklistDTO> getChecklist(@RequestParam Optional<Integer> page, @RequestParam Optional<Integer> size){
         logger.info("Calling the services getAll method");
-        return checklistService.getChecklist();
+        return checklistService.getChecklist(page, size);
     }
 
     @GetMapping("/checklist/{uid}")
-    public ChecklistDTO getChecklistById(@PathVariable String uid){
+    public ChecklistDTO getChecklistById(@PathVariable UUID uid){
         logger.info("Calling the services getByUid method");
         return checklistService.getChecklistById(uid);
+    }
+
+    @GetMapping("/checklist/checklistRequest/{uid}")
+    public List<ChecklistDTO> getChecklistRequestChecklists(@PathVariable UUID uid, @RequestParam Optional<Integer> page, @RequestParam Optional<Integer> size){
+        logger.info("Calling the services getAll method");
+        return checklistService.checklistRequestChecklists(uid, page, size);
     }
 
     @PostMapping("/checklist")
@@ -59,12 +67,12 @@ public class ChecklistController {
     }
 
     @PutMapping("/checklist/{uid}")
-    public void updateChecklist(@PathVariable String uid, @RequestBody Checklist checklist){
+    public void updateChecklist(@PathVariable UUID uid, @RequestBody Checklist checklist){
         checklistService.updateChecklist(uid, checklist);
     }
 
     @DeleteMapping("/checklist/{uid}")
-    public String deleteChecklist(@PathVariable String uid){
+    public String deleteChecklist(@PathVariable UUID uid){
         checklistService.deleteChecklist(uid);
         return "Deleted Successfully";
     }

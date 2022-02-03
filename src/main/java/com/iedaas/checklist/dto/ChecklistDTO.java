@@ -10,7 +10,7 @@ public class ChecklistDTO {
 
     private UUID checklistUid;
     private Map<String, String> checklist;
-    private int statusId;
+    private int checklistStatus =1;
     private Timestamp createdDate;
     private Timestamp updatedDate;
     private ChecklistOwner checklistOwner;
@@ -40,12 +40,12 @@ public class ChecklistDTO {
         this.checklist = checklist;
     }
 
-    public int getStatusId() {
-        return statusId;
+    public int getChecklistStatus() {
+        return checklistStatus;
     }
 
-    public void setStatusId(int statusId) {
-        this.statusId = statusId;
+    public void setChecklistStatus(int checklistStatus) {
+        this.checklistStatus = checklistStatus;
     }
 
     public Timestamp getCreatedDate() {

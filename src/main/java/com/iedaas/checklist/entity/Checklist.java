@@ -1,8 +1,9 @@
 package com.iedaas.checklist.entity;
 
 import com.iedaas.checklist.StringMapConverter;
-import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -16,24 +17,20 @@ public class Checklist {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "checklist_id")
     private int checklistId;
 
-    @Column(name = "checklist_uid")
     @Type(type= "org.hibernate.type.UUIDCharType")
     private UUID checklistUid=UUID.randomUUID();
 
-    @Column(name = "checklist")
     @Convert(converter = StringMapConverter.class)
     private Map<String, String> checklist;
 
-    @Column(name = "checklist_status")
-    private int statusId=1;
+    private int checklistStatus=1;
 
-    @Column(name = "created_date")
+    @CreationTimestamp
     private Timestamp createdDate=Timestamp.valueOf(LocalDateTime.now());
 
-    @Column(name = "updated_date")
+    @UpdateTimestamp
     private Timestamp updatedDate=Timestamp.valueOf(LocalDateTime.now());
 
     @Column(name = "checklist_request_uid", columnDefinition = "VARCHAR(36)")
@@ -44,11 +41,11 @@ public class Checklist {
     }
 
     public Checklist(int checklistId, UUID checklistUid, Map<String, String> checklist,
-                     int statusId, Timestamp createdDate, Timestamp updatedDate, UUID checklistRequestUid) {
+                     int checklistStatus, Timestamp createdDate, Timestamp updatedDate, UUID checklistRequestUid) {
         this.checklistId = checklistId;
         this.checklistUid = checklistUid;
         this.checklist = checklist;
-        this.statusId = statusId;
+        this.checklistStatus = checklistStatus;
         this.createdDate = createdDate;
         this.updatedDate = updatedDate;
         this.checklistRequestUid = checklistRequestUid;
@@ -70,12 +67,12 @@ public class Checklist {
         this.checklist = checklist;
     }
 
-    public int getStatusId() {
-        return statusId;
+    public int getChecklistStatus() {
+        return checklistStatus;
     }
 
-    public void setStatusId(int statusId) {
-        this.statusId = statusId;
+    public void setChecklistStatus(int checklistStatus) {
+        this.checklistStatus = checklistStatus;
     }
 
     public Timestamp getCreatedDate() {
@@ -104,7 +101,7 @@ public class Checklist {
                 "checklistId=" + checklistId +
                 ", checklistUid=" + checklistUid +
                 ", checklist=" + checklist +
-                ", statusId=" + statusId +
+                ", checklistStatus=" + checklistStatus +
                 ", createdDate=" + createdDate +
                 ", updatedDate=" + updatedDate +
                 ", checklistRequestUid=" + checklistRequestUid +

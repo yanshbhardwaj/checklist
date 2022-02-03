@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Component
 public class ChecklistService {
@@ -29,41 +31,55 @@ public class ChecklistService {
     public ChecklistDTO addChecklist(String user, ChecklistDTO checklistDTO){
 
         Checklist checklist = modelMapper.map(checklistDTO, Checklist.class);
-        checklistRepository.save(checklist);
-        ChecklistOwner checklistOwner = new ChecklistOwner(checklist.getChecklistUid(), user);
+        Checklist checklist1 = checklistRepository.save(checklist);
+        ChecklistOwner checklistOwner = new ChecklistOwner(checklist1.getChecklistUid(), user);
         checklistOwnerRepository.save(checklistOwner);
-        checklistDTO.setChecklistOwner(checklistOwner);
-        return checklistDTO;
+        ChecklistDTO checklistDTO1 = modelMapper.map(checklist1, ChecklistDTO.class);
+        checklistDTO1.setChecklistOwner(checklistOwner);
+        return checklistDTO1;
     }
 
     @Transactional
-    public List<ChecklistDTO> getChecklist(){
+    public List<ChecklistDTO> getChecklist(Optional<Integer> page, Optional<Integer> size){
         List<ChecklistDTO> checklistDTOS = new ArrayList<>();
-        List<Checklist> checklists = checklistRepository.findAll();
+        List<Checklist> checklists = checklistRepository.findAll(page, size);
         for(Checklist checklist : checklists){
             ChecklistDTO checklistDTO = modelMapper.map(checklist, ChecklistDTO.class);
+            checklistDTO.setChecklistOwner(checklistOwnerRepository.getbyUid(checklist.getChecklistUid()));
             checklistDTOS.add(checklistDTO);
         }
         return checklistDTOS;
     }
 
     @Transactional
-    public ChecklistDTO getChecklistById(String uid){
+    public ChecklistDTO getChecklistById(UUID uid){
         ChecklistDTO checklistDTO = modelMapper.map(checklistRepository.findbyUUID(uid), ChecklistDTO.class);
+        checklistDTO.setChecklistOwner(checklistOwnerRepository.getbyUid(uid));
         return checklistDTO;
     }
 
     @Transactional
-    public void updateChecklist(String uid,Checklist checklist){
+    public List<ChecklistDTO> checklistRequestChecklists(UUID uid, Optional<Integer> page, Optional<Integer> size){
+        List<ChecklistDTO> checklistDTOS = new ArrayList<>();
+        for(Checklist checklist : checklistRepository.findAllChecklistRequestChecklist(uid, page, size)){
+            ChecklistDTO checklistDTO = modelMapper.map(checklist, ChecklistDTO.class);
+            checklistDTO.setChecklistOwner(checklistOwnerRepository.getbyUid(checklist.getChecklistUid()));
+            checklistDTOS.add(checklistDTO);
+        }
+        return checklistDTOS;
+    }
+
+    @Transactional
+    public void updateChecklist(UUID uid,Checklist checklist){
         Checklist checklist1 = checklistRepository.findbyUUID(uid);
         checklist1.setChecklist(checklist.getChecklist());
-        checklist1.setStatusId(checklist.getStatusId());
+        checklist1.setChecklistStatus(checklist.getChecklistStatus());
         checklist1.setUpdatedDate();
         checklistRepository.save(checklist1);
     }
 
     @Transactional
-    public void deleteChecklist(String uid){
+    public void deleteChecklist(UUID uid){
         checklistRepository.delete(uid);
     }
 }
