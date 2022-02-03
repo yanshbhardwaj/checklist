@@ -2,13 +2,15 @@ package com.iedaas.checklist.services;
 
 import com.iedaas.checklist.dao.ChecklistOwnerRepository;
 import com.iedaas.checklist.dao.ChecklistRepository;
+import com.iedaas.checklist.dto.ChecklistDTO;
 import com.iedaas.checklist.entity.Checklist;
 import com.iedaas.checklist.entity.ChecklistOwner;
-import io.jsonwebtoken.Jwts;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -20,21 +22,35 @@ public class ChecklistService {
     @Autowired
     ChecklistOwnerRepository checklistOwnerRepository;
 
-    @Transactional
-    public void addChecklist(String user, Checklist checklist){
+    @Autowired
+    private ModelMapper modelMapper;
 
+    @Transactional
+    public ChecklistDTO addChecklist(String user, ChecklistDTO checklistDTO){
+
+        Checklist checklist = modelMapper.map(checklistDTO, Checklist.class);
         checklistRepository.save(checklist);
-        checklistOwnerRepository.save(new ChecklistOwner(checklist.getChecklistUid(), user));
+        ChecklistOwner checklistOwner = new ChecklistOwner(checklist.getChecklistUid(), user);
+        checklistOwnerRepository.save(checklistOwner);
+        checklistDTO.setChecklistOwner(checklistOwner);
+        return checklistDTO;
     }
 
     @Transactional
-    public List<Checklist> getChecklist(){
-        return checklistRepository.findAll();
+    public List<ChecklistDTO> getChecklist(){
+        List<ChecklistDTO> checklistDTOS = new ArrayList<>();
+        List<Checklist> checklists = checklistRepository.findAll();
+        for(Checklist checklist : checklists){
+            ChecklistDTO checklistDTO = modelMapper.map(checklist, ChecklistDTO.class);
+            checklistDTOS.add(checklistDTO);
+        }
+        return checklistDTOS;
     }
 
     @Transactional
-    public Checklist getChecklistById(String uid){
-        return checklistRepository.findbyUUID(uid);
+    public ChecklistDTO getChecklistById(String uid){
+        ChecklistDTO checklistDTO = modelMapper.map(checklistRepository.findbyUUID(uid), ChecklistDTO.class);
+        return checklistDTO;
     }
 
     @Transactional

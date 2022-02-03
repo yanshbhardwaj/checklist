@@ -15,11 +15,13 @@ import java.util.UUID;
 public class Checklist {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "checklist_id")
+    private int checklistId;
+
     @Column(name = "checklist_uid")
-    @Type(type= "uuid-char")
-    private UUID checklistUid;
+    @Type(type= "org.hibernate.type.UUIDCharType")
+    private UUID checklistUid=UUID.randomUUID();
 
     @Column(name = "checklist")
     @Convert(converter = StringMapConverter.class)
@@ -34,15 +36,26 @@ public class Checklist {
     @Column(name = "updated_date")
     private Timestamp updatedDate=Timestamp.valueOf(LocalDateTime.now());
 
+    @Column(name = "checklist_request_uid", columnDefinition = "VARCHAR(36)")
+    @Type(type= "org.hibernate.type.UUIDCharType")
+    UUID checklistRequestUid;
+
     public Checklist() {
     }
 
-    public Checklist(UUID checklistUid, Map<String, String> checklist, int statusId, Timestamp createdDate, Timestamp updatedDate) {
+    public Checklist(int checklistId, UUID checklistUid, Map<String, String> checklist,
+                     int statusId, Timestamp createdDate, Timestamp updatedDate, UUID checklistRequestUid) {
+        this.checklistId = checklistId;
         this.checklistUid = checklistUid;
         this.checklist = checklist;
         this.statusId = statusId;
         this.createdDate = createdDate;
         this.updatedDate = updatedDate;
+        this.checklistRequestUid = checklistRequestUid;
+    }
+
+    public int getChecklistId() {
+        return checklistId;
     }
 
     public UUID getChecklistUid() {
@@ -77,14 +90,24 @@ public class Checklist {
         this.updatedDate = updatedDate;
     }
 
+    public UUID getChecklistRequestUid() {
+        return checklistRequestUid;
+    }
+
+    public void setChecklistRequestUid(UUID checklistRequestUid) {
+        this.checklistRequestUid = checklistRequestUid;
+    }
+
     @Override
     public String toString() {
         return "Checklist{" +
-                "checklistUid=" + checklistUid +
-                ", checklist='" + checklist + '\'' +
+                "checklistId=" + checklistId +
+                ", checklistUid=" + checklistUid +
+                ", checklist=" + checklist +
                 ", statusId=" + statusId +
                 ", createdDate=" + createdDate +
                 ", updatedDate=" + updatedDate +
+                ", checklistRequestUid=" + checklistRequestUid +
                 '}';
     }
 }

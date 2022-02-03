@@ -1,6 +1,8 @@
 package com.iedaas.checklist.entity;
 
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 import java.util.UUID;
 
@@ -12,7 +14,11 @@ public class ChecklistOwner {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(name = "checklist_uid", columnDefinition = "VARCHAR(36)")
+    @Type(type= "org.hibernate.type.UUIDCharType")
     private UUID checklistUid;
+
+    @Column(name = "owner_uid", columnDefinition = "VARCHAR(36)")
     private String ownerUid;
 
     public ChecklistOwner() {

@@ -1,8 +1,11 @@
 package com.iedaas.checklist.controller;
 
+import com.iedaas.checklist.dto.ChecklistDTO;
 import com.iedaas.checklist.entity.Checklist;
 import com.iedaas.checklist.services.ChecklistService;
 import io.jsonwebtoken.Jwts;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,26 +15,29 @@ import java.util.List;
 @RestController
 public class ChecklistController {
 
+    private static final Logger logger = LoggerFactory.getLogger(ChecklistController.class);
+
     static final String SECRET = "ThisIsASecret";
     static final String TOKEN_PREFIX = "Bearer";
     static final String HEADER_STRING = "Authorization";
 
     @Autowired
-    ChecklistService checklistService;
+    private ChecklistService checklistService;
 
     @GetMapping("/checklist")
-    public List<Checklist> getChecklist(){
-
+    public List<ChecklistDTO> getChecklist(){
+        logger.info("Calling the services getAll method");
         return checklistService.getChecklist();
     }
 
     @GetMapping("/checklist/{uid}")
-    public Checklist getChecklistById(@PathVariable String uid){
+    public ChecklistDTO getChecklistById(@PathVariable String uid){
+        logger.info("Calling the services getByUid method");
         return checklistService.getChecklistById(uid);
     }
 
     @PostMapping("/checklist")
-    public String addChecklist(HttpServletRequest request, @RequestBody Checklist checklist){
+    public ChecklistDTO addChecklist(HttpServletRequest request, @RequestBody ChecklistDTO checklistDTO){
         String token = request.getHeader(HEADER_STRING);
         String user = null;
         if (token != null) {
@@ -49,14 +55,12 @@ public class ChecklistController {
                 e.printStackTrace();
             }
         }
-        checklistService.addChecklist(user, checklist);
-        return "Checklist Inserted Successfully";
+        return checklistService.addChecklist(user, checklistDTO);
     }
 
     @PutMapping("/checklist/{uid}")
-    public String updateChecklist(@PathVariable String uid, @RequestBody Checklist checklist){
+    public void updateChecklist(@PathVariable String uid, @RequestBody Checklist checklist){
         checklistService.updateChecklist(uid, checklist);
-        return "Checklist Updated Successfully";
     }
 
     @DeleteMapping("/checklist/{uid}")

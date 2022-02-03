@@ -1,0 +1,74 @@
+package com.iedaas.checklist.dto;
+
+import com.iedaas.checklist.entity.ChecklistOwner;
+
+import java.sql.Timestamp;
+import java.util.Map;
+import java.util.UUID;
+
+public class ChecklistDTO {
+
+    private UUID checklistUid;
+    private Map<String, String> checklist;
+    private int statusId;
+    private Timestamp createdDate;
+    private Timestamp updatedDate;
+    private ChecklistOwner checklistOwner;
+    private UUID ChecklistRequestUid;
+
+    public UUID getChecklistUid() {
+        return checklistUid;
+    }
+
+    public void setChecklistUid(UUID checklistUid) {
+        this.checklistUid = checklistUid;
+    }
+
+    public UUID getChecklistRequestUid() {
+        return ChecklistRequestUid;
+    }
+
+    public void setChecklistRequestUid(UUID checklistRequestUid) {
+        ChecklistRequestUid = checklistRequestUid;
+    }
+
+    public Map<String, String> getChecklist() {
+        return checklist;
+    }
+
+    public void setChecklist(Map<String, String> checklist) {
+        this.checklist = checklist;
+    }
+
+    public int getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(int statusId) {
+        this.statusId = statusId;
+    }
+
+    public Timestamp getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Timestamp createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Timestamp getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public void setUpdatedDate(Timestamp updatedDate) {
+        this.updatedDate = updatedDate;
+    }
+
+    public ChecklistOwner getChecklistOwner() {
+        return checklistOwner;
+    }
+
+    public void setChecklistOwner(ChecklistOwner checklistOwner) {
+        this.checklistOwner = checklistOwner;
+    }
+}
