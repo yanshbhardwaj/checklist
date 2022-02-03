@@ -28,7 +28,7 @@ public class ChecklistService {
     private ModelMapper modelMapper;
 
     @Transactional
-    public ChecklistDTO addChecklist(String user, ChecklistDTO checklistDTO){
+    public ChecklistDTO addChecklist(UUID user, ChecklistDTO checklistDTO){
 
         Checklist checklist = modelMapper.map(checklistDTO, Checklist.class);
         Checklist checklist1 = checklistRepository.save(checklist);
