@@ -19,6 +19,7 @@ public class ChecklistOwner {
     private UUID checklistUid;
 
     @Column(name = "owner_uid", columnDefinition = "VARCHAR(36)")
+    @Type(type= "org.hibernate.type.UUIDCharType")
     private UUID ownerUid;
 
     public ChecklistOwner() {

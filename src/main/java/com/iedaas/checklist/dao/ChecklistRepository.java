@@ -30,7 +30,8 @@ public class ChecklistRepository {
     }
 
     public Checklist save(Checklist checklist) {
-        return (Checklist) getSession().save(checklist);
+        getSession().save(checklist);
+        return checklist;
     }
 
     public List<Checklist> pagination(Query<Checklist> query, int page, int size){

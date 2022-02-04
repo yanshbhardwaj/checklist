@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Converter
-public class StringMapConverter implements AttributeConverter<Map<String, String>, String> {
+public class StringMapConverter implements AttributeConverter<Map<Object, Object>, String> {
 
     private static ObjectMapper mapper;
 
@@ -20,7 +20,7 @@ public class StringMapConverter implements AttributeConverter<Map<String, String
     }
 
     @Override
-    public String convertToDatabaseColumn(Map<String, String> data) {
+    public String convertToDatabaseColumn(Map<Object, Object> data) {
         if (null == data) {
             // You may return null if you prefer that style
             return "{}";
@@ -35,14 +35,14 @@ public class StringMapConverter implements AttributeConverter<Map<String, String
     }
 
     @Override
-    public Map<String, String> convertToEntityAttribute(String s) {
+    public Map<Object, Object> convertToEntityAttribute(String s) {
         if (null == s) {
             // You may return null if you prefer that style
             return new HashMap<>();
         }
 
         try {
-            return mapper.readValue(s, new TypeReference<Map<String, String>>() {});
+            return mapper.readValue(s, new TypeReference<Map<Object, Object>>() {});
 
         } catch (IOException e) {
             throw new IllegalArgumentException("Error converting JSON to map", e);

@@ -9,7 +9,7 @@ import java.util.UUID;
 public class ChecklistDTO {
 
     private UUID checklistUid;
-    private Map<String, String> checklist;
+    private Map<Object, Object> checklist;
     private int checklistStatus =1;
     private Timestamp createdDate;
     private Timestamp updatedDate;
@@ -32,11 +32,11 @@ public class ChecklistDTO {
         ChecklistRequestUid = checklistRequestUid;
     }
 
-    public Map<String, String> getChecklist() {
+    public Map<Object, Object> getChecklist() {
         return checklist;
     }
 
-    public void setChecklist(Map<String, String> checklist) {
+    public void setChecklist(Map<Object, Object> checklist) {
         this.checklist = checklist;
     }
 

@@ -19,33 +19,33 @@ public class Checklist {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int checklistId;
 
-    @Column(name = "checklist_uid")
+//    @Column(name = "checklist_uid")
     @Type(type= "org.hibernate.type.UUIDCharType")
     private UUID checklistUid=UUID.randomUUID();
 
-    @Column(name = "checklist")
+//    @Column(name = "checklist")
     @Convert(converter = StringMapConverter.class)
-    private Map<String, String> checklist;
+    private Map<Object, Object> checklist;
 
-    @Column(name = "checklist_status")
+//    @Column(name = "checklist_status")
     private int checklistStatus=1;
 
-    @Column(name = "created_date")
+//    @Column(name = "created_date")
     @CreationTimestamp
     private Timestamp createdDate=Timestamp.valueOf(LocalDateTime.now());
 
-    @Column(name = "updated_date")
+//    @Column(name = "updated_date")
     @UpdateTimestamp
     private Timestamp updatedDate=Timestamp.valueOf(LocalDateTime.now());
 
-    @Column(name = "checklist_request_uid", columnDefinition = "VARCHAR(36)")
+//    @Column(name = "checklist_request_uid", columnDefinition = "VARCHAR(36)")
     @Type(type= "org.hibernate.type.UUIDCharType")
     UUID checklistRequestUid;
 
     public Checklist() {
     }
 
-    public Checklist(int checklistId, UUID checklistUid, Map<String, String> checklist,
+    public Checklist(int checklistId, UUID checklistUid, Map<Object, Object> checklist,
                      int checklistStatus, Timestamp createdDate, Timestamp updatedDate, UUID checklistRequestUid) {
         this.checklistId = checklistId;
         this.checklistUid = checklistUid;
@@ -64,11 +64,11 @@ public class Checklist {
         return checklistUid;
     }
 
-    public Map<String, String> getChecklist() {
+    public Map<Object, Object> getChecklist() {
         return checklist;
     }
 
-    public void setChecklist(Map<String, String> checklist) {
+    public void setChecklist(Map<Object, Object> checklist) {
         this.checklist = checklist;
     }
 
